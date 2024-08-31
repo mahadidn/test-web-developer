@@ -47,11 +47,10 @@ class UserController extends Controller
         $user = User::where('user_id', $data['userID'])->first();
         if(!$user || !Hash::check($data['pwd'], $user->password)){
             throw new HttpResponseException(response([
-                'errors' => [
-                    'message' => [
-                        'username or password wrong'
-                    ]
+                'message' => [
+                    'Login Gagal'
                 ]
+                
             ], 401));
         }
 

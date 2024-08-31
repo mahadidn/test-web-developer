@@ -115,10 +115,8 @@ class UserTest extends TestCase
             'pwd' => '1234456789'
         ])->assertStatus(401)
             ->assertJson([
-                'errors' => [
-                    'message' => [
-                        'username or password wrong'
-                    ]
+                'message' => [
+                    'Login Gagal'
                 ]
             ]);
 
