@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\TeachingClassSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -124,6 +125,40 @@ class UserTest extends TestCase
         self::assertNull($user->token);
     }
 
+    public function testGetTeachingClass(){
+
+        $this->seed([DatabaseSeeder::class, TeachingClassSeeder::class]);
+
+        // get joko
+        $this->get('/api/v1/users/class', [
+            'Authorization' => 'contohABC'
+        ])->assertJson([
+            "class" => [
+                "Basis Data Jumat 7.30-10.00"
+            ]
+        ]);
+
+        // get anis
+        $this->get('/api/v1/users/class', [
+            'Authorization' => 'contohDEF'
+        ])->assertJson([
+            "class" => [
+                "Grafika Rabu 7.30-10.00",
+                "Grafika Kamis 13.30-15.00"
+            ]
+        ]);
+
+        // get prabowo
+        $this->get('/api/v1/users/class', [
+            'Authorization' => 'contohGHI'
+        ])->assertJson([
+            "class" => [
+                "Algoritma Senin 7.30-10.00",
+                "Algoritma Selasa 13.30-15.00",
+                "Algoritma Kamis 7.30-10.00"
+            ]
+        ]);
+    }
 
     public function testLogoutSuccess(){
         $this->seed([DatabaseSeeder::class]);
@@ -138,6 +173,7 @@ class UserTest extends TestCase
         $user = User::where('token', 'contoh')->first();
         self::assertNull($user);
     }
+
 
     public function testLogoutFailed(){
         $this->seed([DatabaseSeeder::class]);

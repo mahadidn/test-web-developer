@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\TeachingClassController;
 use App\Http\Controllers\v1\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
 use Illuminate\Http\Request;
@@ -27,6 +28,10 @@ Route::prefix('v1')->group(function(){
 
 
     Route::middleware(ApiAuthMiddleware::class)->group(function(){
+
+        // get class
+        Route::get('/users/class', [TeachingClassController::class, 'getTeachingClass']);
+
         Route::delete('/users/logout', [UserController::class, 'logout']);
     });
 
