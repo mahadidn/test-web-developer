@@ -21,7 +21,8 @@ class UserTest extends TestCase
     //     $response->assertStatus(200);
     // }
 
-    public function testRegisterSuccess(){
+    public function testRegisterSuccess()
+    {
 
 
         // $photo = base64_encode("tes foto");
@@ -35,17 +36,16 @@ class UserTest extends TestCase
             'rights' => ['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum']
         ])->assertStatus(201)
             ->assertJson([
-                "data" => [
-                    "userName" => "Joko Baswedan",
-                    'userRights' => json_encode(['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum'])
-                ]
+                "userName" => "Joko Baswedan",
+                'userRights' => ['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum']
+
             ]);
 
         $this->assertEquals($photo, base64_decode(User::where('user_id', '901111')->first()->photo));
-
     }
 
-    public function testRegisterFailed(){
+    public function testRegisterFailed()
+    {
         $photo = base64_encode(UploadedFile::fake()->image('avatar.jpg'));
 
         $this->post('/api/v1/users', [
@@ -69,7 +69,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function testRegisterUsernameAlreadyExists(){
+    public function testRegisterUsernameAlreadyExists()
+    {
         $this->testRegisterSuccess();
 
         $photo = base64_encode(UploadedFile::fake()->image('avatar.jpg'));
@@ -87,10 +88,10 @@ class UserTest extends TestCase
                 ],
             ]
         ]);
-
     }
 
-    public function testLoginSuccess(){
+    public function testLoginSuccess()
+    {
 
         $this->seed([UserSeeder::class]);
         $this->post('/api/v1/users/login', [
@@ -98,17 +99,15 @@ class UserTest extends TestCase
             'pwd' => '123456789'
         ])->assertStatus(200)
             ->assertJson([
-                'data' => [
-                    'userName' => 'Joko Baswedan'
-                ]
+                'userName' => 'Joko Baswedan'
             ]);
 
         $user = User::where('user_id', '901111')->first();
         self::assertNotNull($user->token);
-
     }
 
-    public function testLoginFailed(){
+    public function testLoginFailed()
+    {
         $this->seed([UserSeeder::class]);
         $this->post('/api/v1/users/login', [
             'userID' => '901111',
@@ -125,5 +124,4 @@ class UserTest extends TestCase
         $user = User::where('user_id', '901111')->first();
         self::assertNull($user->token);
     }
-
 }
