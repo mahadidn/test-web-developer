@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\UserController;
+use App\Http\Middleware\ApiAuthMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +24,10 @@ Route::prefix('v1')->group(function(){
 
     Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/login', [UserController::class, 'login']);    
+
+
+    Route::middleware(ApiAuthMiddleware::class)->group(function(){
+        Route::delete('/users/logout', [UserController::class, 'logout']);
+    });
 
 });

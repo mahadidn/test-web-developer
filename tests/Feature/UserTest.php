@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -124,4 +125,31 @@ class UserTest extends TestCase
         $user = User::where('user_id', '901111')->first();
         self::assertNull($user->token);
     }
+
+
+    public function testLogoutSuccess(){
+        $this->seed([DatabaseSeeder::class]);
+
+        $this->delete(uri: '/api/v1/users/logout', headers: [
+            'Authorization' => 'contoh'
+        ])->assertStatus(200)
+            ->assertJson([
+                'status' => true
+            ]);
+
+        $user = User::where('token', 'contoh')->first();
+        self::assertNull($user);
+    }
+
+    public function testLogoutFailed(){
+        $this->seed([DatabaseSeeder::class]);
+
+        $this->delete(uri: '/api/v1/users/logout', headers: [
+            'Authorization' => 'contcdh'
+        ])->assertStatus(401)
+            ->assertJson([
+                'status' => "Gagal"
+            ]);
+    }
+
 }
