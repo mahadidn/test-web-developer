@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\CplController;
 use App\Http\Controllers\v1\TeachingClassController;
 use App\Http\Controllers\v1\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
@@ -30,7 +31,13 @@ Route::prefix('v1')->group(function(){
     Route::middleware(ApiAuthMiddleware::class)->group(function(){
 
         // get class
-        Route::get('/users/class', [TeachingClassController::class, 'getTeachingClass']);
+        Route::post('/users/class', [TeachingClassController::class, 'getTeachingClass']);
+
+        // cpl
+        Route::post('/users/cpl/get', [CplController::class, 'get']);
+        Route::post('/users/cpl', [CplController::class, 'add']);
+        Route::post('/users/cpl/delete', [CplController::class, 'removeCpl']);
+        Route::post('/users/cpl/update', [CplController::class, 'updateCpl']);
 
         Route::delete('/users/logout', [UserController::class, 'logout']);
     });

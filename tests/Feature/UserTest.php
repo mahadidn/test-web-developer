@@ -130,7 +130,9 @@ class UserTest extends TestCase
         $this->seed([DatabaseSeeder::class, TeachingClassSeeder::class]);
 
         // get joko
-        $this->get('/api/v1/users/class', [
+        $this->post('/api/v1/users/class', [
+            "class" => "list"
+        ], [
             'Authorization' => 'contohABC'
         ])->assertJson([
             "class" => [
@@ -139,7 +141,9 @@ class UserTest extends TestCase
         ]);
 
         // get anis
-        $this->get('/api/v1/users/class', [
+        $this->post('/api/v1/users/class', [
+            "class" => "list"
+        ] ,[
             'Authorization' => 'contohDEF'
         ])->assertJson([
             "class" => [
@@ -149,7 +153,9 @@ class UserTest extends TestCase
         ]);
 
         // get prabowo
-        $this->get('/api/v1/users/class', [
+        $this->post('/api/v1/users/class', [
+            "class" => "list"
+        ], [
             'Authorization' => 'contohGHI'
         ])->assertJson([
             "class" => [
