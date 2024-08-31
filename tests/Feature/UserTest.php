@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -24,7 +25,7 @@ class UserTest extends TestCase
 
 
         // $photo = base64_encode("tes foto");
-        $photo = base64_encode(UploadedFile::fake()->image('avatar.jpg'));
+        $photo = UploadedFile::fake()->image('avatar.jpg');
 
         $this->post('/api/v1/users', [
             'user_id' => '901111',
@@ -35,13 +36,12 @@ class UserTest extends TestCase
         ])->assertStatus(201)
             ->assertJson([
                 "data" => [
-                    "user_id" => "901111",
-                    "name" => "Joko Baswedan",
-                    'rights' => json_encode(['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum'])
+                    "userName" => "Joko Baswedan",
+                    'userRights' => json_encode(['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum'])
                 ]
             ]);
 
-        $this->assertEquals($photo, base64_encode(User::where('user_id', '901111')->first()->photo));
+        $this->assertEquals($photo, base64_decode(User::where('user_id', '901111')->first()->photo));
 
     }
 
@@ -88,6 +88,42 @@ class UserTest extends TestCase
             ]
         ]);
 
+    }
+
+    public function testLoginSuccess(){
+
+        $this->seed([UserSeeder::class]);
+        $this->post('/api/v1/users/login', [
+            'userID' => '901111',
+            'pwd' => '123456789'
+        ])->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'userName' => 'Joko Baswedan'
+                ]
+            ]);
+
+        $user = User::where('user_id', '901111')->first();
+        self::assertNotNull($user->token);
+
+    }
+
+    public function testLoginFailed(){
+        $this->seed([UserSeeder::class]);
+        $this->post('/api/v1/users/login', [
+            'userID' => '901111',
+            'pwd' => '1234456789'
+        ])->assertStatus(401)
+            ->assertJson([
+                'errors' => [
+                    'message' => [
+                        'username or password wrong'
+                    ]
+                ]
+            ]);
+
+        $user = User::where('user_id', '901111')->first();
+        self::assertNull($user->token);
     }
 
 }

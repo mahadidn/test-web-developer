@@ -17,10 +17,10 @@ class UserResource extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'user_id' => $this->user_id,
-            'name' => $this->name,
-            'photo' => $this->photo,
-            'rights' => $this->rights
+            'userToken' => $this->whenNotNull($this->token),
+            'userName' => $this->name,
+            'userPhoto' => $this->photo,
+            'userRights' => $this->rights,
         ];
 
     }
