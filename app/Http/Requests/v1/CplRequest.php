@@ -24,8 +24,8 @@ class CplRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "kodecpl" => ['required'],
-            "deskripsi" => ['required', 'string']
+            "cpl.kodecpl" => ['required'],
+            "cpl.deskripsi" => ['required', 'string']
         ];
     }
 

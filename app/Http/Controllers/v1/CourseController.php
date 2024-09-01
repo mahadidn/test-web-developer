@@ -8,6 +8,7 @@ use App\Http\Resources\v1\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PSpell\Config;
 
 class CourseController extends Controller
@@ -22,6 +23,14 @@ class CourseController extends Controller
     }
 
     public function addCourse(CourseRequest $request): JsonResponse{
+
+        $rights = json_decode(Auth::user()->rights);
+
+        if(!in_array("editKurikulum", $rights)){
+            return response()->json([
+                "status" => "Gagal"
+            ], 403); 
+        }
 
         $validatedData = $request->validated();
         
@@ -49,6 +58,14 @@ class CourseController extends Controller
 
     public function removeCourse(Request $request): JsonResponse {
 
+        $rights = json_decode(Auth::user()->rights);
+
+        if(!in_array("editKurikulum", $rights)){
+            return response()->json([
+                "status" => "Gagal"
+            ], 403); 
+        }
+
         $validatedData = $request->validate([
             "mk.kodemk" => "required",
         ]);
@@ -70,6 +87,14 @@ class CourseController extends Controller
     }
 
     public function updateCourse(Request $request, $kodeMk): JsonResponse {
+
+        $rights = json_decode(Auth::user()->rights);
+
+        if(!in_array("editKurikulum", $rights)){
+            return response()->json([
+                "status" => "Gagal"
+            ], 403); 
+        }
 
         $validatedData = $request->validate([
             "mk.kodemk" => "required",

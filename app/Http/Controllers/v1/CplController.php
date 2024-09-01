@@ -35,9 +35,13 @@ class CplController extends Controller
             ], 403);
         }
 
+        $kodecpl = $data['cpl']['kodecpl'];
+        $deskripsi = $data['cpl']['deskripsi'];
 
-        $cpl = new Cpl($data);
-        $cpl->kode_cpl = $data['kodecpl'];
+
+        $cpl = new Cpl();
+        $cpl->kode_cpl = $kodecpl;
+        $cpl->deskripsi = $deskripsi;
         $cpl->save();
 
         return response()->json([

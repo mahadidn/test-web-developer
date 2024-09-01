@@ -39,8 +39,11 @@ class CplTest extends TestCase
         $this->seed([DatabaseSeeder::class]);
 
         $this->post(uri: '/api/v1/users/cpl', data: [
-            "kodecpl" => "CPL01",
-            "deskripsi" => "Mampu bekerja sama secara interpersonal"
+            "cpl" => [
+                "kodecpl" => "CPL01",
+                "deskripsi" => "Mampu bekerja sama secara interpersonal"
+
+            ]            
         ], headers: [
             "Authorization" => "contohABC"
         ])->assertStatus(201)
