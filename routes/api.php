@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\CplController;
+use App\Http\Controllers\v1\CpmkController;
 use App\Http\Controllers\v1\TeachingClassController;
 use App\Http\Controllers\v1\UserController;
 use App\Http\Middleware\ApiAuthMiddleware;
@@ -38,6 +39,13 @@ Route::prefix('v1')->group(function(){
         Route::post('/users/cpl', [CplController::class, 'add']);
         Route::post('/users/cpl/delete', [CplController::class, 'removeCpl']);
         Route::post('/users/cpl/update', [CplController::class, 'updateCpl']);
+
+
+        // cpmk
+        Route::post('/users/cpmk/get', [CpmkController::class, 'list']);
+        Route::post('/users/cpmk/add', [CpmkController::class, 'addCpmk']);
+        Route::post('/users/cpmk/remove/{kodecpmk}', [CpmkController::class, 'removeCpmk']);
+        Route::post('/users/cpmk/update/{kodecpmk}', [CpmkController::class, 'updateCpmk']);
 
         Route::delete('/users/logout', [UserController::class, 'logout']);
     });

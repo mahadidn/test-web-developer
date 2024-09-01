@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Auth;
 class CplController extends Controller
 {
     
-    public function get(Request $request): array {
+    public function get(Request $request): JsonResponse {
         $cpl = Cpl::get();
 
-        return ['cpl' => CplResource::collection($cpl)];
+        return response()->json([
+            'cpl' => CplResource::collection($cpl)
+        ], 201); 
 
     }
 

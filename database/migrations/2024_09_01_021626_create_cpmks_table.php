@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teaching_classes', function (Blueprint $table) {
+        Schema::create('cpmk', function (Blueprint $table) {
             $table->id();
-            $table->string("class_name");
-            $table->unsignedBigInteger("user_id");
+            $table->string("kode_cpl");
+            $table->string('kode_cpmk')->unique();
+            $table->text('deskripsi');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete("CASCADE")->onUpdate("CASCADE");
-
+            $table->foreign('kode_cpl')->references('kode_cpl')->on('cpl')->onDelete("CASCADE")->onUpdate("CASCADE");
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teaching_classes');
+        Schema::dropIfExists('cpmk');
     }
 };
