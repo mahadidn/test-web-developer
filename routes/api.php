@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\CourseController;
 use App\Http\Controllers\v1\CplController;
 use App\Http\Controllers\v1\CpmkController;
 use App\Http\Controllers\v1\TeachingClassController;
@@ -46,6 +47,13 @@ Route::prefix('v1')->group(function(){
         Route::post('/users/cpmk/add', [CpmkController::class, 'addCpmk']);
         Route::post('/users/cpmk/remove/{kodecpmk}', [CpmkController::class, 'removeCpmk']);
         Route::post('/users/cpmk/update/{kodecpmk}', [CpmkController::class, 'updateCpmk']);
+
+        // course
+        Route::post('/users/mk/get', [CourseController::class, 'listCourse']);
+        Route::post('/users/mk/add', [CourseController::class, 'addCourse']);
+        Route::post('/users/mk/remove', [CourseController::class, 'removeCourse']);
+        Route::post('/users/mk/update/{kodemk}', [CourseController::class, 'updateCourse']);
+
 
         Route::delete('/users/logout', [UserController::class, 'logout']);
     });
