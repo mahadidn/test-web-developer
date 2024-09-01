@@ -31,13 +31,17 @@ class UserController extends Controller
 
         $user = new User($data);
         $user->password = Hash::make($data['password']);
-        $user->photo = base64_encode($data['photo']);
+        $user->photo = file_get_contents($request->file('photo')->getRealPath());
         $user->rights = json_encode($data['rights']);
         $user->save();
 
-        return (new UserResource($user))->response()->setStatusCode(201);
+        return response()->json([
+            "status" => "ok"
+        ], 201);
 
     }
+
+
 
 
     public function login(UserLoginRequest $request): UserResource {
@@ -56,6 +60,11 @@ class UserController extends Controller
 
         $user->token = Str::uuid()->toString();
         $user->save();
+
+        $photoData = base64_encode($user->photo);
+        $photoMimeType = "image/jpg";
+        $photoBase64 = "data:$photoMimeType;base64,$photoData";
+        $user->photo = $photoBase64;
 
         return new UserResource($user);
 

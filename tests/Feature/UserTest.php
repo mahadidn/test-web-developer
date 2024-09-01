@@ -25,10 +25,8 @@ class UserTest extends TestCase
 
     public function testRegisterSuccess()
     {
-
-
-        // $photo = base64_encode("tes foto");
         $photo = UploadedFile::fake()->image('avatar.jpg');
+        $binaryPhoto = file_get_contents($photo->getPathname());
 
         $this->post('/api/v1/users', [
             'user_id' => '901111',
@@ -38,13 +36,14 @@ class UserTest extends TestCase
             'rights' => ['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum']
         ])->assertStatus(201)
             ->assertJson([
-                "userName" => "Joko Baswedan",
-                'userRights' => ['buatCPL', 'editCPL', 'rancangKurikulum', 'editKurikulum']
-
+                "status" => "ok"
             ]);
 
-        $this->assertEquals($photo, base64_decode(User::where('user_id', '901111')->first()->photo));
+        $savedPhoto = User::where('user_id', '901111')->first()->photo;
+
+        $this->assertEquals($binaryPhoto, $savedPhoto);
     }
+
 
     public function testRegisterFailed()
     {

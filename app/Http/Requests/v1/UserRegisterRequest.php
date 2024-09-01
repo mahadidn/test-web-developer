@@ -27,8 +27,8 @@ class UserRegisterRequest extends FormRequest
             'user_id' => ['required', 'string', 'unique:users,user_id'],
             'password' => ['required', 'string', 'min:8'],
             'name' => ['string'],
-            'photo' => ['file', 'image', 'mimes:png,jpg,jpeg'],
-            'rights' => ['array']
+            'photo' => ['required'],
+            'rights' => ['required']
         ];
     }
 
