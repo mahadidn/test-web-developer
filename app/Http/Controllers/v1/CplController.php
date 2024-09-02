@@ -15,7 +15,8 @@ class CplController extends Controller
 {
     
     public function get(Request $request): JsonResponse {
-        $cpl = Cpl::get();
+        // $cpl = Cpl::get();
+        $cpl = Cpl::query()->orderBy('kode_cpl', 'asc')->get();
 
         return response()->json([
             'cpl' => CplResource::collection($cpl)
@@ -58,7 +59,7 @@ class CplController extends Controller
 
         $rights = json_decode(Auth::user()->rights);
 
-        if(!in_array("hapusCPL", $rights)){
+        if(!in_array("editCPL", $rights)){
             return response()->json([
                 "status" => "Gagal"
             ], 403);
@@ -72,7 +73,7 @@ class CplController extends Controller
         ], 201);
     }
 
-    public function updateCpl(Request $request): JsonResponse {
+    public function updateCpl(Request $request, $kodeCpl): JsonResponse {
 
         $validatedData = $request->validate([
             'cpl.kodecpl' => "required",
@@ -82,7 +83,7 @@ class CplController extends Controller
         $kodecpl = $validatedData['cpl']['kodecpl'];
         $deskripsi = $validatedData['cpl']['deskripsi'];
 
-        $cpl = Cpl::query()->where('kode_cpl', $kodecpl)->first();
+        $cpl = Cpl::query()->where('kode_cpl', $kodeCpl)->first();
         if(!$cpl){
             return response()->json([
                 "status" => "Gagal"

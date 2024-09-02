@@ -39,7 +39,7 @@ Route::prefix('v1')->group(function(){
         Route::post('/users/cpl/get', [CplController::class, 'get']);
         Route::post('/users/cpl', [CplController::class, 'add']);
         Route::post('/users/cpl/delete', [CplController::class, 'removeCpl']);
-        Route::post('/users/cpl/update', [CplController::class, 'updateCpl']);
+        Route::post('/users/cpl/update/{kodecpmk}', [CplController::class, 'updateCpl']);
 
 
         // cpmk

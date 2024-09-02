@@ -64,9 +64,9 @@ class CplTest extends TestCase
                 ]
             ], [
                 'Authorization' => 'ContohABC'
-            ])->assertStatus(403)
+            ])->assertStatus(201)
                 ->assertJson([
-                    "status" => "Gagal"
+                    "status" => "OK"
                 ]);
 
     }
@@ -75,7 +75,7 @@ class CplTest extends TestCase
 
         $this->seed([DatabaseSeeder::class, CplSeeder::class]);
 
-        $this->post('/api/v1/users/cpl/update', [
+        $this->post('/api/v1/users/cpl/update/cpl01', [
                 'cpl' => [
                     "kodecpl" => "CPL01",
                     "deskripsi" => "test coba ubah"
