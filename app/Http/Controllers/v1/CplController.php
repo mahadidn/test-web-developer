@@ -90,6 +90,15 @@ class CplController extends Controller
             ], 404);
         }
 
+        if($kodecpl != $cpl->kode_cpl){
+
+            $validatedData = $request->validate([
+                'cpl.kodecpl' => 'unique:cpl,kode_cpl'
+            ]);
+
+            $cpl->kode_cpl = $kodecpl;
+        }
+
         $cpl->deskripsi = $deskripsi;
         $cpl->save();
         
